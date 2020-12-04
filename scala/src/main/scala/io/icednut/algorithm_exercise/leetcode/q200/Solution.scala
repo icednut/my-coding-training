@@ -6,7 +6,7 @@ import scala.util.Try
 object Solution {
   def numIslands(grid: Array[Array[Char]]): Int = {
     var numIslands = 0
-    val visited = mutable.Map[(Int, Int), Boolean]()
+    var visited = mutable.Map[(Int, Int), Boolean]()
 
     for (i <- 0 until grid.length) {
       for (j <- 0 until grid(i).length) {
@@ -14,7 +14,7 @@ object Solution {
           val stack = new mutable.Stack[(Int, Int)]()
 
           push(stack, (i, j), visited)
-          dfs(grid, (i, j), stack, visited)
+          dfs(grid, stack, visited)
           numIslands += 1
         }
       }
@@ -24,27 +24,31 @@ object Solution {
   }
 
   private def dfs(grid: Array[Array[Char]],
-                  position: (Int, Int),
                   stack: mutable.Stack[(Int, Int)],
                   visited: mutable.Map[(Int, Int), Boolean]): Unit = {
-    if (position._2 > 0 && grid(position._1)(position._2 - 1) == '1') {
-      push(stack, (position._1, position._2 - 1), visited)
-    }
-    if (position._2 < grid(position._1).length - 1 && grid(position._1)(position._2 + 1) == '1') {
-      push(stack, (position._1, position._2 + 1), visited)
-    }
-    if (position._1 > 0 && grid(position._1 - 1)(position._2) == '1') {
-      push(stack, (position._1 - 1, position._2), visited)
-    }
-    if (position._1 < grid.length - 1 && grid(position._1 + 1)(position._2) == '1') {
-      push(stack, (position._1 + 1, position._2), visited)
-    }
-
-    visited.put(position, true)
     val newStandard = Try(stack.pop()).toOption
 
-    if (newStandard.isDefined) {
-      dfs(grid, newStandard.get, stack, visited)
+    newStandard match {
+      case Some(position) =>
+        visited.put(position, true)
+
+        if (position._2 > 0 && !isVisited((position._1, position._2 - 1), visited) && grid(position._1)(position._2 - 1) == '1') {
+          push(stack, (position._1, position._2 - 1), visited)
+          dfs(grid, stack, visited)
+        }
+        if (position._2 < grid(position._1).length - 1 && !isVisited((position._1, position._2 + 1), visited) && grid(position._1)(position._2 + 1) == '1') {
+          push(stack, (position._1, position._2 + 1), visited)
+          dfs(grid, stack, visited)
+        }
+        if (position._1 > 0 && !isVisited((position._1 - 1, position._2), visited) && grid(position._1 - 1)(position._2) == '1') {
+          push(stack, (position._1 - 1, position._2), visited)
+          dfs(grid, stack, visited)
+        }
+        if (position._1 < grid.length - 1 && !isVisited((position._1 + 1, position._2), visited) && grid(position._1 + 1)(position._2) == '1') {
+          push(stack, (position._1 + 1, position._2), visited)
+          dfs(grid, stack, visited)
+        }
+      case None =>
     }
   }
 
