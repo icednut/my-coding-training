@@ -1,20 +1,13 @@
 package io.icednut.algorithm_exercise.leetcode.q200
 
-import scala.collection.mutable
-import scala.util.Try
-
 object Solution {
   def numIslands(grid: Array[Array[Char]]): Int = {
     var numIslands = 0
-    var visited = mutable.Map[(Int, Int), Boolean]()
 
     for (i <- 0 until grid.length) {
       for (j <- 0 until grid(i).length) {
-        if (!isVisited((i, j), visited) && grid(i)(j) == '1') {
-          val stack = new mutable.Stack[(Int, Int)]()
-
-          push(stack, (i, j), visited)
-          dfs(grid, stack, visited)
+        if (grid(i)(j) == '1') {
+          dfs(grid, (i, j))
           numIslands += 1
         }
       }
@@ -23,41 +16,24 @@ object Solution {
     numIslands
   }
 
-  private def dfs(grid: Array[Array[Char]],
-                  stack: mutable.Stack[(Int, Int)],
-                  visited: mutable.Map[(Int, Int), Boolean]): Unit = {
-    val newStandard = Try(stack.pop()).toOption
-
-    newStandard match {
-      case Some(position) =>
-        visited.put(position, true)
-
-        if (position._2 > 0 && !isVisited((position._1, position._2 - 1), visited) && grid(position._1)(position._2 - 1) == '1') {
-          push(stack, (position._1, position._2 - 1), visited)
-          dfs(grid, stack, visited)
-        }
-        if (position._2 < grid(position._1).length - 1 && !isVisited((position._1, position._2 + 1), visited) && grid(position._1)(position._2 + 1) == '1') {
-          push(stack, (position._1, position._2 + 1), visited)
-          dfs(grid, stack, visited)
-        }
-        if (position._1 > 0 && !isVisited((position._1 - 1, position._2), visited) && grid(position._1 - 1)(position._2) == '1') {
-          push(stack, (position._1 - 1, position._2), visited)
-          dfs(grid, stack, visited)
-        }
-        if (position._1 < grid.length - 1 && !isVisited((position._1 + 1, position._2), visited) && grid(position._1 + 1)(position._2) == '1') {
-          push(stack, (position._1 + 1, position._2), visited)
-          dfs(grid, stack, visited)
-        }
-      case None =>
+  private def dfs(grid: Array[Array[Char]], current: (Int, Int)): Unit = {
+    // current는 x로 치환하고
+    grid(current._1)(current._2) = 'x'
+    // left 탐색
+    if (current._2 - 1 >= 0 && grid(current._1)(current._2 - 1) == '1') {
+      dfs(grid, (current._1, current._2 - 1))
     }
-  }
-
-  private def push(stack: mutable.Stack[(Int, Int)], position: (Int, Int), visited: mutable.Map[(Int, Int), Boolean]): Unit =
-    if (!isVisited(position, visited)) {
-      stack.push(position)
+    // right 탐색
+    if (current._2 + 1 < grid(current._1).length && grid(current._1)(current._2 + 1) == '1') {
+      dfs(grid, (current._1, current._2 + 1))
     }
-
-  private def isVisited(position: (Int, Int), visited: mutable.Map[(Int, Int), Boolean]) = {
-    visited.get((position._1, position._2)).isDefined
+    // up 탐색
+    if (current._1 - 1 >= 0 && grid(current._1 - 1)(current._2) == '1') {
+      dfs(grid, (current._1 - 1, current._2))
+    }
+    // down 탐색
+    if (current._1 + 1 < grid.length && grid(current._1 + 1)(current._2) == '1') {
+      dfs(grid, (current._1 + 1, current._2))
+    }
   }
 }
