@@ -1,7 +1,11 @@
 package io.icednut.algorithm_exercise.leetcode.q121
 
+import scala.annotation.tailrec
+
 object Solution {
+
   def maxProfit(prices: Array[Int]): Int = {
+    @tailrec
     def run(prices: Array[Int], minIndex: Int, maxIndex: Int, maxProfit: Int): Int = {
       if (maxIndex >= prices.length) {
         maxProfit
@@ -37,11 +41,11 @@ object Solution {
 
   private def nextMax(prices: Array[Int], startIndex: Int): (Int, Int) =
     prices.zipWithIndex
-      .map((elem: (Int, Int)) => if (elem._2 <= startIndex) (Int.MinValue, elem._2) else elem)
+      .map(elem => if (elem._2 <= startIndex) (Int.MinValue, elem._2) else elem)
       .max
 
   private def nextMin(prices: Array[Int], startIndex: Int): (Int, Int) =
     prices.zipWithIndex
-      .map((elem: (Int, Int)) => if (elem._2 <= startIndex) (Int.MaxValue, elem._2) else elem)
+      .map(elem => if (elem._2 <= startIndex) (Int.MaxValue, elem._2) else elem)
       .min
 }
