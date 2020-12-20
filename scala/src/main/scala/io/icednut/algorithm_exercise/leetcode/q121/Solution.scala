@@ -2,31 +2,28 @@ package io.icednut.algorithm_exercise.leetcode.q121
 
 object Solution {
   def maxProfit(prices: Array[Int]): Int = {
+    def run(prices: Array[Int], minIndex: Int, maxIndex: Int, maxProfit: Int): Int = {
+      if (maxIndex >= prices.length) {
+        maxProfit
+      } else {
+        prices(maxIndex) - prices(minIndex) match {
+          case newMaxProfit if newMaxProfit > maxProfit =>
+            if (isContinue(prices, minIndex, maxIndex)) {
+              run(prices, minIndex, maxIndex + 1, newMaxProfit)
+            } else {
+              newMaxProfit
+            }
+          case newMaxProfit if newMaxProfit < 0 =>
+            run(prices, maxIndex, maxIndex + 1, maxProfit)
+          case _ =>
+            run(prices, minIndex, maxIndex + 1, maxProfit)
+        }
+      }
+    }
+
     prices match {
       case Array() => 0
       case _ => run(prices, 0, 1, 0)
-    }
-  }
-
-  private def run(prices: Array[Int], minIndex: Int, maxIndex: Int, maxProfit: Int): Int = {
-    if (maxIndex >= prices.length) {
-      maxProfit
-    } else {
-      val newMaxProfit = prices(maxIndex) - prices(minIndex)
-
-      if (newMaxProfit > maxProfit) {
-        if (isContinue(prices, minIndex, maxIndex)) {
-          run(prices, minIndex, maxIndex + 1, newMaxProfit)
-        } else {
-          newMaxProfit
-        }
-      } else {
-        if (prices(minIndex) > prices(maxIndex)) {
-          run(prices, maxIndex, maxIndex + 1, maxProfit)
-        } else {
-          run(prices, minIndex, maxIndex + 1, maxProfit)
-        }
-      }
     }
   }
 
