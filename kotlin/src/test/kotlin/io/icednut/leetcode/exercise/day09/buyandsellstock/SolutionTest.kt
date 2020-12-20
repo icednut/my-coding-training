@@ -53,7 +53,6 @@ internal class SolutionTest {
     @Test
     fun `가장 수익이 큰 주식 비용을 계산할 수 있어야 한다6`() {
         val solution = Solution()
-
         val maxProfit = solution.maxProfit(intArrayOf(6, 1, 6, 4, 3, 0, 2))
 
         assertEquals(5, maxProfit)
