@@ -26,7 +26,7 @@ object Solution {
     }
 
     prices match {
-      case Array() => 0
+      case Array() | null => 0
       case _ => run(prices, 0, 1, 0)
     }
   }

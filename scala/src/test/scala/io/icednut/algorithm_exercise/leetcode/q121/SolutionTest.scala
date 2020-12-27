@@ -59,4 +59,10 @@ class SolutionTest extends AnyFunSuite {
 
     assert(maxProfit == 0)
   }
+
+  test("case 09") {
+    val maxProfit = Solution.maxProfit(prices = null)
+
+    assert(maxProfit == 0)
+  }
 }
