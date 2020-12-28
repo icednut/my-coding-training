@@ -5,24 +5,23 @@ import scala.util.Try
 
 class LRUCache(_capacity: Int) {
 
-  val queue = new mutable.Queue[Int]
+  val queue = mutable.Queue[Int]()
   val cache = mutable.Map[Int, Int]()
 
   def get(key: Int): Int = {
     val value = Try(cache(key)).getOrElse(-1)
 
     if (value != -1) {
-      queue.removeFirst(_ == key)
-      queue.enqueue(key)
+      queue.dequeueFirst(_ == key)
+      queue += key
     }
     value
   }
 
   def put(key: Int, value: Int): Unit = {
-    if (queue.contains(key)) {
-      val deleteTargetKey = queue.dequeueFirst(_ == key).getOrElse(-1)
-      cache += (deleteTargetKey -> -1)
-
+    val savedKey = queue.indexOf(key)
+    if (savedKey >= 0) {
+      queue.remove(savedKey)
     } else if (queue.size == _capacity) {
       val deleteTargetKey = queue.dequeue()
       cache += (deleteTargetKey -> -1)
