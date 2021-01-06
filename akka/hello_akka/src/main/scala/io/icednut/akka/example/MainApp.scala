@@ -2,25 +2,29 @@ package io.icednut.akka.example
 
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.{ActorSystem, Behavior}
-import io.icednut.akka.example.HelloActor.Greeting
+import io.icednut.akka.example.HelloActor.{Greeting, Message}
 
 object MainApp {
 
   def main(args: Array[String]): Unit = {
-    val helloActor: ActorSystem[HelloActor.Message] = ActorSystem(guardianBehavior = HelloActor(), "helloActorSystem")
+    val helloActorBehavior: Behavior[Message] = HelloActor()
+    val helloActor: ActorSystem[HelloActor.Message] =
+      ActorSystem(guardianBehavior = helloActorBehavior, name = "helloActorSystem")
 
-    helloActor ! Greeting("Hello, world!")
-    helloActor ! Greeting("Hello, Akka!")
+    helloActor ! Greeting("World!")
+    helloActor ! Greeting("Akka!")
   }
 }
 
 object HelloActor {
 
   def apply(): Behavior[Message] = {
-    Behaviors.receiveMessage {
-      case Greeting(body) =>
-        println(body)
-        Behaviors.same
+    Behaviors.receive { (ctx, message) =>
+      (ctx, message) match {
+        case (context, Greeting(body)) =>
+          context.log.info(s"Hello, $body")
+          Behaviors.same
+      }
     }
   }
 
