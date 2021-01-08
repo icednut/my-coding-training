@@ -7,12 +7,20 @@ import io.icednut.akka.example.HelloActor.{Greeting, Message}
 object MainApp {
 
   def main(args: Array[String]): Unit = {
-    val helloActorBehavior: Behavior[Message] = HelloActor()
-    val helloActor: ActorSystem[HelloActor.Message] =
-      ActorSystem(guardianBehavior = helloActorBehavior, name = "helloActorSystem")
+    val number: Option[Int] = Some(3)
+    val noNumber: Option[Int] = None
+    val result1 = number.fold(1)(_ * 3)
+    val result2 = noNumber.fold(1)(_ * 3)
 
-    helloActor ! Greeting("World!")
-    helloActor ! Greeting("Akka!")
+    println(result1)
+    println(result2)
+
+//    val helloActorBehavior: Behavior[Message] = HelloActor()
+//    val helloActor: ActorSystem[HelloActor.Message] =
+//      ActorSystem(guardianBehavior = helloActorBehavior, name = "helloActorSystem")
+//
+//    helloActor ! Greeting("World!")
+//    helloActor ! Greeting("Akka!")
   }
 }
 
