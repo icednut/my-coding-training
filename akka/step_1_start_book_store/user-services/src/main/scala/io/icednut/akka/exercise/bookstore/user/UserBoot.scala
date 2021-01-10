@@ -5,5 +5,5 @@ import akka.http.scaladsl.server.Route
 import io.icednut.akka.exercise.bookstore.common.Bootstrap
 
 class UserBoot extends Bootstrap {
-  override def bootup(system: ActorSystem[Nothing]): List[Route] = ???
+  override def bootup(system: ActorSystem[Nothing]): Route = ???
 }

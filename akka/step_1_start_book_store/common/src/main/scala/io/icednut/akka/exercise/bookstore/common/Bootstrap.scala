@@ -4,5 +4,5 @@ import akka.actor.typed.ActorSystem
 import akka.http.scaladsl.server.Route
 
 trait Bootstrap {
-  def bootup(system: ActorSystem[Nothing]): List[Route]
+  def bootup(system: ActorSystem[Nothing]): Route
 }

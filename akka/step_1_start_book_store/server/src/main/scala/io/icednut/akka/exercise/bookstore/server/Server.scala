@@ -22,7 +22,7 @@ object Server extends App {
     val endpoints: Route = conf.getStringList("serviceBoots")
       .asScala
       .map(toBootClass)
-      .flatMap(_.bootup(context.system))
+      .map(_.bootup(context.system))
       .foldRight(routes.userRoutes) {
         case (endpoint, route) =>
           context.log.info("Adding endpoint: {}", endpoint)
