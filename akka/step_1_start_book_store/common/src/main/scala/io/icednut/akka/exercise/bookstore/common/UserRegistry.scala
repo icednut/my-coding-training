@@ -1,15 +1,12 @@
 package io.icednut.akka.exercise.bookstore.common
 
-//#user-registry-actor
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.{ActorRef, Behavior}
 
 import scala.collection.immutable
 
-//#user-case-classes
 final case class User(name: String, age: Int, countryOfResidence: String)
 final case class Users(users: immutable.Seq[User])
-//#user-case-classes
 
 object UserRegistry {
   // actor protocol
@@ -40,4 +37,3 @@ object UserRegistry {
         registry(users.filterNot(_.name == name))
     }
 }
-//#user-registry-actor
