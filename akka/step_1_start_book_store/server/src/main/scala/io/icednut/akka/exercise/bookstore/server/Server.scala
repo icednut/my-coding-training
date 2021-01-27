@@ -1,7 +1,7 @@
 package io.icednut.akka.exercise.bookstore.server
 
 import akka.actor.typed.ActorSystem
-import akka.actor.typed.scaladsl.Behaviors
+import akka.actor.typed.scaladsl.{ActorContext, Behaviors}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.{Directives, Route}
 import com.typesafe.config.ConfigFactory
@@ -18,11 +18,13 @@ object Server extends App {
     val userRegistryActor = context.spawn(UserRegistry(), "UserRegistryActor")
     context.watch(userRegistryActor)
 
+    implicit val c = context
+
     val routes = new UserRoutes(userRegistryActor)(context.system)
     val endpoints: Route = conf.getStringList("serviceBoots")
       .asScala
       .map(toBootClass)
-      .map(_.bootup(context.system))
+      .map(_.bootup())
       .foldRight(routes.userRoutes) {
         case (endpoint, route) =>
           context.log.info("Adding endpoint: {}", endpoint)
@@ -35,7 +37,7 @@ object Server extends App {
 
   ActorSystem[Nothing](guardianBehavior = rootBehavior, name = "HelloAkkaHttpServer", config = conf)
 
-  private def toBootClass(bootPrefix: String) = {
+  private def toBootClass(bootPrefix: String)(implicit context: ActorContext[Nothing]) = {
     val clazz = s"io.icednut.akka.exercise.bookstore.${bootPrefix.toLowerCase()}.${bootPrefix}Boot"
     Class.forName(clazz).newInstance().asInstanceOf[Bootstrap]
   }
