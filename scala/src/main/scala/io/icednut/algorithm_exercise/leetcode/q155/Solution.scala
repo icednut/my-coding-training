@@ -7,7 +7,7 @@ class MinStack() {
   /** initialize your data structure here. */
   private val stack = new mutable.Stack[(Int, Int)]()
 
-  def push(x: Int) {
+  def push(x: Int): Unit = {
     val newMin: Int = if (stack.isEmpty) {
       x
     } else {
@@ -17,7 +17,7 @@ class MinStack() {
   }
 
   def pop(): Unit = {
-    stack.pop()
+    val pop = stack.pop()
   }
 
   def top(): Int = {

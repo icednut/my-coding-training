@@ -9,11 +9,11 @@ class MinStackTest extends AnyFunSuite {
     minStack.push(-2)
     minStack.push(0)
     minStack.push(-3)
-    assert(minStack.getMin == -3)
+    assert(minStack.getMin() == -3)
 
-    minStack.pop
-    assert(minStack.top == 0)
+    minStack.pop()
+    assert(minStack.top() == 0)
 
-    assert(minStack.getMin == -2)
+    assert(minStack.getMin() == -2)
   }
 }

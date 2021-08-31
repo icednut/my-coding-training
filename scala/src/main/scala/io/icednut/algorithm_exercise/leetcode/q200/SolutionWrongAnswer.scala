@@ -29,7 +29,7 @@ object SolutionWrongAnswer {
     // 4
     // current == 2에 근접한 노드를 push 한다. 근데 방문했으면 push 하지 않는다.
     if (grid(2)(0) == '1') {
-      stack.push(???)
+//      stack.push(???)
     } else {
       visited = visited :+ current // current == 1
       current = stack.pop() // current == 0
@@ -51,9 +51,9 @@ object SolutionWrongAnswer {
       current = stack.pop() // current == null
     }
     // 8
-    if (current == null) {
-      island += 1
-    }
+//    if (current == null) {
+//      island += 1
+//    }
     // 9
     stack.push(2)
     current = stack.pop() // current == 2
@@ -62,15 +62,15 @@ object SolutionWrongAnswer {
     }
     // 10
     if (grid(2)(3) == '1') {
-      stack.push(???)
+//      stack.push(???)
     } else {
       visited = visited :+ current // current == 2
       current = stack.pop() // current == null
     }
     // 11
-    if (current == null) {
-      island += 1
-    }
+//    if (current == null) {
+//      island += 1
+//    }
     // 12
     stack.push(3)
     current = stack.pop() // current == 3
@@ -86,9 +86,9 @@ object SolutionWrongAnswer {
 
     current = stack.pop()
 
-    if (current == null) {
-      island += 1
-    }
+//    if (current == null) {
+//      island += 1
+//    }
     island
   }
 
