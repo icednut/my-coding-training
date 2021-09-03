@@ -25,6 +25,10 @@ libraryDependencies ++= Seq(
   "tf.tofu" %% "derevo-cats-tagless" % "0.12.5",
   "tf.tofu" %% "derevo-circe-magnolia" % "0.12.5",
   "tf.tofu" %% "tofu-core-higher-kind" % "0.10.2",
+
+  "dev.profunktor" %% "redis4cats-effects" % "1.0.0",
+
+  // Test
   "qa.hedgehog" %% "hedgehog-core" % hedgehogVersion,
   "qa.hedgehog" %% "hedgehog-runner" % hedgehogVersion,
   "qa.hedgehog" %% "hedgehog-sbt" % hedgehogVersion,
